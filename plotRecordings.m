@@ -1,4 +1,4 @@
-function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, stim, stim_channel, sweeps, xlimit)
+function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, stim, stim_channel, sweeps, xlimit, overlay)
 
     tts = recording2tt(recordings); % Convert recordings to timetables 
 
@@ -24,14 +24,18 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
 
         nsweeps = length(itersweeps); 
     
-        ts{r} = tiledlayout(nsweeps, 1, 'TileSpacing', 'tight');
+        if ~overlay
+            
+            ts{r} = tiledlayout(nsweeps, 1, 'TileSpacing', 'tight');
+
+        end 
 
     
         for i = itersweeps 
 
             trace = squeeze(tt.(trace_string)(:,recording.c.(signal_channel),i));
     
-            nexttile
+            if ~overlay; nexttile; end
 
             if sweep_iter == 1 && stim
 
@@ -54,7 +58,7 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
 
             ylimit = min_max;
 
-            ylimit(2) = max(stim_record_plot);
+            if stim; ylimit(2) = max(stim_record_plot); end
     
             ylim(ylimit);
 
@@ -67,7 +71,7 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
                 sbar = scalebar();
                 sbar.XLen = 1; 
                 sbar.XUnit = 'sec.';
-                sbar.YLen = 20; 
+                sbar.YLen = 10; 
                 sbar.YUnit = recording.h.recChUnits{recording.c.(signal_channel)};
                 sbar.hTextY_Pos = [-2.5,-1];
                 sbar.hTextX_Pos = [1,-10];
