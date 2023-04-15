@@ -134,7 +134,7 @@ channels='a';
 % 5-30 min
 chunk=0.05;
 machineF='ieee-le';
-verbose=1;
+verbose=0;
 % if first and only optional input argument is string 'info' the user's
 % request is to obtain information on the file (header parameters), so set
 % flag accordingly
@@ -669,7 +669,7 @@ switch h.nOperationMode
     end
     
   case 3
-    disp('data were acquired in gap-free mode');
+    %disp('data were acquired in gap-free mode');
     % from start, stop, headOffset and h.fADCSampleInterval calculate first point to be read
     %  and - unless stop is given as 'e' - number of points
     startPt=floor(1e6*start*(1/h.fADCSampleInterval));
