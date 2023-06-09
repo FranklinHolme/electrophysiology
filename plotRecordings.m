@@ -1,4 +1,4 @@
-function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, stim, stim_channel, sweeps, xlimit, overlay)
+function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, stim, stim_channel, sweeps, xlimit, ylimit, overlay, xaxisvisible)
 
     tts = recording2tt(recordings); % Convert recordings to timetables 
 
@@ -29,7 +29,6 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
             ts{r} = tiledlayout(nsweeps, 1, 'TileSpacing', 'tight');
 
         end 
-
     
         for i = itersweeps 
 
@@ -43,7 +42,9 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
 
                 stim_record_plot = stim_record * 3 + 1.1 * abs(max(trace)); 
 
-                plot(time2num(tt.Time), stim_record_plot, 'k');
+                plot(time2num(tt.Time), stim_record_plot - (min(stim_record_plot) - min_max(2)), 'k');
+
+                %plot(time2num(tt.Time), stim_record_plot - 20, 'k');
 
                 hold on 
 
@@ -56,9 +57,11 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
     
             plot(time2num(tt.Time), trace, 'k'); 
 
-            ylimit = min_max;
+            if isempty(ylimit); ylimit = min_max; end
 
-            if stim; ylimit(2) = max(stim_record_plot); end
+            set(gca, "YTick", -2000:20:2000); % limits that make sense for single cell ephys 
+
+            if stim && isempty(ylimit); ylimit(2) = max(stim_record_plot); end
     
             ylim(ylimit);
 
@@ -68,18 +71,20 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
 
             if sweep_iter == 1
 
-                sbar = scalebar();
-                sbar.XLen = 1; 
-                sbar.XUnit = 'sec.';
-                sbar.YLen = 10; 
-                sbar.YUnit = recording.h.recChUnits{recording.c.(signal_channel)};
-                sbar.hTextY_Pos = [-2.5,-1];
-                sbar.hTextX_Pos = [1,-10];
-                sbar.Position = [max(xlim)-sbar.XLen, min(trace)+0.05*range(trace)];
+%                 sbar = scalebar();
+%                 sbar.XLen = 1; 
+%                 sbar.XUnit = 'sec.';
+%                 sbar.YLen = 10; 
+%                 sbar.YUnit = recording.h.recChUnits{recording.c.(signal_channel)};
+%                 sbar.hTextY_Pos = [-2.5,-1];
+%                 sbar.hTextX_Pos = [1,-10];
+%                 sbar.Position = [max(xlim)-sbar.XLen, min(trace)+0.05*range(trace)];
 
             end 
 
-            axis off
+            h = gca;
+
+            h.XAxis.Visible = xaxisvisible;
 
             box off 
 

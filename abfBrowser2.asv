@@ -57,7 +57,7 @@ function [] = displayTraces(filelist, sweeps)
         
         set(fig, 'Position', [5         271        1912         707]);
 
-        title(t, cur_filename, 'Interpreter', 'none');
+        title(t, cur_filename, 'Interpreter', none);
 
         pause();
         %close(fig);
