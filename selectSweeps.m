@@ -12,7 +12,7 @@ function [rnew] = selectSweeps(r, sweeps)
 
     else
 
-        rnew.tt.trace = r.tt.trace(:,:,sweeeps(1):end);
+        rnew.tt.trace = r.tt.trace(:,:,sweeps(1):end);
 
         warning('Attempted to select more sweeps than exist in the recording');
 

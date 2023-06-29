@@ -2,15 +2,15 @@
 % voltage clamp. Use several trials and take the mean response. 
 
 % Parameters 
-filename = {'F23041403_0002.abf'};
+filename = {'F23020703_0045.abf'};
 
-sweeps = [3:6]; % [] for all 
+sweeps = [1:5]; 
 
 log_photons_per_micron2_per_s = 6.365; 
 
 stim_dur = 50; % ms 
 
-fit_dur = 15; % seconds after flash to fit with the double exponential 
+fit_dur = 10; % seconds after flash to fit with the double exponential 
 
 recording_type = 'dim flash';
 
@@ -43,12 +43,18 @@ St = log10(abs(rmean.fitmin) / photons_per_micron2);
 % Plot the mean dim flash response, the single trials, and the curve fit 
 f = figure;
 
-plot(r.tt.Time, squeeze(r.tt.trace(:,cfilt,:)));
+%plot(r.tt.Time, squeeze(r.tt.trace(:,cfilt,:)));
 
 hold on 
 
 plot(rmean.tt.Time, rmean.tt.trace(:,cfilt,:), 'k');
 
 plot(rmean.fitbounds, rmean.fitpredict, 'r', "LineWidth", 1.5); 
+
+hline(0, '--k');
+
+ylim([-4 1]);
+
+setFigureDefaults(f);
 
 set(f, 'Position', [-6, 859, 1250, 318]);

@@ -13,6 +13,8 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
         recording = recordings{r};
 
         hs{r} = figure;
+
+        hold on 
     
         %% Plot each sweep, arranging them vertically in a tiled layout
 
@@ -38,15 +40,15 @@ function [hs, ts] = plotRecordings(recordings, trace_string, signal_channel, sti
 
             if sweep_iter == 1 && stim
 
+                hold on 
+
                 stim_record = squeeze(tt.(trace_string)(:,recording.c.(stim_channel),i));
 
-                stim_record_plot = stim_record * 3 + 1.1 * abs(max(trace)); 
+                stim_record_plot = stim_record * 1 + 1.1 * abs(max(trace)); 
 
                 plot(time2num(tt.Time), stim_record_plot - (min(stim_record_plot) - min_max(2)), 'k');
 
                 %plot(time2num(tt.Time), stim_record_plot - 20, 'k');
-
-                hold on 
 
             end
 
