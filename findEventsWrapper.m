@@ -1,6 +1,8 @@
-params.event_deriv = 0.25;
+params.event_size = 0.25;
 
-params.event_deriv_fwhm = 0.001;
+params.fwhm = 0.001;
+
+params.trace_name = 'filt_trace'; 
 
 params.c = 1; 
 

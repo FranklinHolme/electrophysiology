@@ -1,7 +1,7 @@
 function [segrecordings] = segmentRecordings(recordings, intervals)
 
     % Inputs
-    % recordings: structs with fields tt, containing time interval with 'Time' and 'trace'
+    % recordings: structs with fields tt (a timetable), containing time interval with 'Time' and 'trace'
     % intervals: rows are intervals, columns are start and end times
     % in seconds 
 
@@ -15,26 +15,26 @@ function [segrecordings] = segmentRecordings(recordings, intervals)
 
         r = recordings{i};
 
-        segr.h = r.h; % copy fields of recording 
+        % copy fields of recording that don't need to be segmented in time 
+        segr.h = r.h; 
 
         segr.type = r.type;
 
         segr.c = r.c; 
 
-        if ~isempty(intervals)
+
+        if ~isempty(intervals) && ~isnan(intervals(i, 1)) % Intervals left as empty or NaN to skip segmentation 
 
             samplesininterval = timerange(seconds(intervals(i, 1)), seconds(intervals(i, 2)));
-    
-            segr.tt.trace = r.tt.trace(samplesininterval, :, :);
-    
+
+            segr.tt = r.tt(samplesininterval, :);
+
             segr.tt.Time = r.tt.Time(samplesininterval) - min(r.tt.Time(samplesininterval)); % start the clock from zero 
 
         else % if interval is empty, just copy everything over 
 
-            segr.tt.trace = r.tt.trace;
-
-            segr.tt.Time = r.tt.Time; 
-
+            segr = r; 
+            
         end 
 
         segrecordings{i} = segr;
