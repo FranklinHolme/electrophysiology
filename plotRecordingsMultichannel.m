@@ -49,9 +49,9 @@ function [hs, ts] = plotRecordingsMultichannel(recordings, trace_string, signal_
                     stim_record = squeeze(tt.('trace')(:,recording.c.(stim_channel),i));
     
                     stim_record_plot = stim_record * 1 + 1.1 * abs(max(trace)); 
-    
+
                     plot(time2num(tt.Time), stim_record_plot - (min(stim_record_plot) - min_max(2)), 'k');
-        
+
                 end
     
 
